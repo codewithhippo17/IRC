@@ -1,0 +1,15 @@
+# markdownlint-cli2 configuration
+# See: https://github.com/DavidAnson/markdownlint
+config:
+  # Disable strict rules that cause noise in docs
+  MD013: false # line-length
+  MD022: false # blanks-around-headings
+  MD024: false # no-duplicate-heading
+  MD032: false # blanks-around-lists
+  MD033: false # inline-html
+  MD036: false # no-emphasis-as-heading
+  MD041: false # first-line-heading (relaxed)
+  MD031: false
+  MD040: false
+  MD034: false
+  MD060: false

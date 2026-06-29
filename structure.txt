@@ -1,167 +1,43 @@
-IRC Project Structure — Task Distribution
-📌 Project Objective
-
-The IRC project consists of developing an IRC server in C++ capable of:
-
-handling multiple clients simultaneously,
-allowing communication between users,
-managing channels,
-implementing the main IRC protocol commands.
-
-The server must use non-blocking sockets and poll() to manage multiple connections without threads or forks.
-
-🧱 General Project Architecture
-
-The project will be divided into several modules to clearly separate responsibilities.
-
-Planned File Structure
-irc/
-│
-├── srcs/
-|   ├── main.cpp
-|   ├── Server.cpp
-|   ├── Server.hpp
-|   │
-|   ├── Client.cpp
-|   ├── Client.hpp
-|   │
-|   ├── Channel.cpp
-|   ├── Channel.hpp
-|   │
-|   ├── Parser.cpp
-|   ├── Parser.hpp
-│
-├── Commands/
-│   ├── pass.cpp
-│   ├── nick.cpp
-│   ├── user.cpp
-│   ├── join.cpp
-│   ├── part.cpp
-│   ├── privmsg.cpp
-│   ├── kick.cpp
-│   └── topic.cpp
-│
-├── utils/
-│   ├── utils.cpp
-│   └── utils.hpp
-│
-└── Makefile
-
-
-👤 Task Distribution
-
-👤 Peer 1 — Network / Server Part
-Responsibilities:
-
-This part corresponds to the core of the IRC server.
-
-Tasks
-Creating the server socket
-Port configuration
-bind()
-listen()
-accept()
-Managing non-blocking sockets
-Implementing poll()
-Managing client connections and disconnections
-Main server loop
-Managing pollfd
-Related Files
-main.cpp
-Server.cpp
-Server.hpp
-Goal
-
-Allow:
-
-multiple simultaneous connections,
-sending and receiving data,
-proper event handling.
-
-👤 Peer 2 — Parsing and IRC Commands
-Responsibilities:
-
-Managing the parsing of commands sent by clients.
-
-Tasks
-Parsing IRC messages
-Splitting commands and arguments
-Validating arguments
-Executing IRC commands
-Commands to Implement
-PASS
-NICK
-USER
-PRIVMSG
-JOIN
-PART
-Related Files
-Parser.cpp
-Parser.hpp
-Commands/
-Goal
-
-Transform received messages into executable server actions.
-
-👤 Peer 3 — Client and Channel Management
-Responsibilities:
-
-Managing the project data structures.
-
-Tasks
-Creating the Client class
-Creating the Channel class
-Managing connected users
-Managing channels
-Managing operators
-Broadcasting messages
-Managing permissions
-Implementing:
-KICK
-INVITE
-TOPIC
-MODE
-Related Files
-Client.cpp
-Client.hpp
-Channel.cpp
-Channel.hpp
-Goal
-
-Correctly maintain the state of users and channels.
-
-🌿 Git Organization
-Each member will work on a separate branch:
-
-git checkout -b networking
-git checkout -b parsing
-git checkout -b channels
-
-Merges will be done progressively after validating features.
-
-📅 Work Organization
-First Step:
-Server setup
-Multi-client connection
-Basic parsing
-
-
-Second Step:
-Command implementation
-Channel management
-
-
-Final Step:
-Error handling
-Testing
-Bug fixing
-Code cleanup
-
-
-🎯 Final Objective:
-At the end of the project, the server should:
-accept multiple clients,
-manage IRC channels,
-allow communication between users,
-follow the main IRC protocol rules,
-work reliably using poll() and non-blocking sockets.
+ft_irc/
+├── Makefile
+├── README.md
+├── includes/
+│   ├── Server.hpp
+│   ├── Client.hpp
+│   ├── Channel.hpp
+│   ├── Command.hpp
+│   ├── Replies.hpp          // IRC numeric reply codes (001, 401, etc.)
+│   ├── Utils.hpp            // String helpers, time, etc.
+│   └── Colors.hpp           // Optional: terminal colors for debug
+└── srcs/
+    ├── main.cpp
+    ├── Server/
+    │   ├── Server.cpp         // Constructor, basic methods
+    │   ├── ServerRun.cpp      // runServer(), poll loop
+    │   ├── ServerClient.cpp   // accept, remove, find clients
+    │   ├── ServerChannels.cpp // channel management helpers
+    │   └── ServerCommands.cpp // command dispatch
+    ├── Client/
+    │   ├── Client.cpp         // Constructor, getters, setters
+    │   └── ClientBuffer.cpp   // Buffer management
+    ├── Channel/
+    │   ├── Channel.cpp        // Constructor, members
+    │   ├── ChannelModes.cpp   // MODE command implementation
+    │   └── ChannelOps.cpp     // KICK, INVITE, TOPIC
+    ├── Commands/
+    │   ├── Pass.cpp
+    │   ├── Nick.cpp
+    │   ├── User.cpp
+    │   ├── Join.cpp
+    │   ├── Privmsg.cpp
+    │   ├── Kick.cpp
+    │   ├── Invite.cpp
+    │   ├── Topic.cpp
+    │   ├── Mode.cpp           // Delegates to i,t,k,o,l handlers
+    │   ├── Part.cpp
+    │   └── Quit.cpp
+    ├── Command/
+    │   └── Command.cpp        // Parser implementation
+    └── Utils/
+        ├── Utils.cpp          // split, trim, toUpper, etc.
+        └── Replies.cpp        // sendReply helpers

@@ -1,0 +1,28 @@
+# Binary
+ircserv
+ircserv.dSYM/
+
+# Object files (any depth)
+*.o
+*.obj
+
+# Compiler/linker outputs
+*.out
+*.exe
+*.a
+*.so
+*.dylib
+*.dll
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Debug
+*.log
+vgcore.*
