@@ -35,23 +35,23 @@ Branches: `feature/channel-join` → `feature/channel-modes`
 
 ---
 
-### 👤 Hippo (You) — "The Maintainer"
+### 👤 Hippo — "The Maintainer"
 **Focus:** Interfaces, integration, quality gate
 
-| You Own | You Do |
-|---------|--------|
-| All `.hpp` files | Define APIs before anyone starts |
-| `Replies.hpp` | Centralize all IRC numeric codes |
-| `tests/` directory | Write shell scripts for integration testing |
+| Owns | Role |
+|------|------|
+| All `.hpp` files | Defines APIs before implementation starts |
+| `Replies.hpp` | Centralizes all IRC numeric codes |
+| `tests/` directory | Writes shell scripts for integration testing |
 | `README.md` | Documentation |
-| Merge control | Only you merge to `develop` and `master` |
+| Merge control | Sole person permitted to merge to `develop` and `master` |
 
 ---
 
 ## 🌿 Branch Structure
 
 ```
-master (protected)          ← only you merge from develop
+master (protected)          ← Hippo merges from develop
   └── develop               ← integration branch, PRs merge here
       ├── feature/core-poll-loop   ← Mohammed
       ├── feature/core-auth        ← Mohammed
@@ -86,20 +86,20 @@ git checkout -b feature/channel-join origin/feature/channel-join
 # 1. Get latest from develop
 git checkout develop
 git pull origin develop
-git checkout <your-feature-branch>
+git checkout <feature-branch>
 git merge develop
 
 # 2. Code, compile, commit
 # ...
 
-# 3. Push your feature branch
-git push origin <your-feature-branch>
+# 3. Push the feature branch
+git push origin <feature-branch>
 ```
 
 ### Open a PR (when feature is done)
 1. Go to https://github.com/codewithhippo17/IRC
-2. **base:** `develop` ← **compare:** `your-feature-branch`
-3. Title: `feat: what you implemented`
+2. **base:** `develop` ← **compare:** `<feature-branch>`
+3. Title: `feat: brief description of implementation`
 4. Assign reviewer: **Hippo**
 5. Wait for review — Hippo merges
 
@@ -112,7 +112,7 @@ git checkout -b <next-feature-branch> develop
 
 ---
 
-## 📋 Your Workflow (Hippo — Maintainer)
+## 📋 Maintainer Workflow (Hippo)
 
 ```bash
 # 1. Review open PRs from Mohammed and Noura
@@ -177,31 +177,31 @@ void Server::_dispatchCommand(Client& client, const Command& cmd) {
 }
 ```
 
-**This is your merge point.** You write this skeleton. Dev A fills auth commands. Dev B fills channel commands. Neither touches the other's block.
+**This is the merge point.** Hippo writes this skeleton. Mohammed fills auth commands. Noura fills channel commands. Neither touches the other's block.
 
 ---
 
 ## 📁 File Ownership
 
-| File | Owner | Notes |
-|------|-------|-------|
-| `Server.hpp` | **Hippo** | Interface contract |
-| `Client.hpp` | **Hippo** | Mohammed implements |
-| `Channel.hpp` | **Hippo** | Noura implements |
-| `Command.hpp` | **Hippo** | Mohammed implements parser |
-| `Replies.hpp` | **Hippo** | Centralized codes |
-| `Server.cpp`, `ServerRun.cpp`, `ServerClient.cpp` | Mohammed | Core engine |
-| `Client.cpp`, `ClientBuffer.cpp` | Mohammed | Buffer, auth state |
-| `main.cpp`, `Makefile` | Mohammed | Entry, build |
-| `Command.cpp` | Mohammed | Parser |
-| `Pass.cpp`, `Nick.cpp`, `User.cpp`, `Quit.cpp` | Mohammed | Auth |
-| `Utils.cpp`, `Replies.cpp` | Mohammed | Helpers |
-| `Channel.cpp` | Noura | Membership, modes |
-| `Join.cpp`, `Part.cpp` | Noura | Channel entry/exit |
-| `Privmsg.cpp` | Noura | Messaging |
-| `Kick.cpp`, `Invite.cpp`, `Topic.cpp` | Noura | Operator commands |
-| `Mode.cpp` | Noura | Mode handler |
-| `tests/*.sh` | **Hippo** | Integration tests |
+| File                                              | Owner     | Notes                      |
+| ------------------------------------------------- | --------- | -------------------------- |
+| `Server.hpp`                                      | **Hippo** | Interface contract         |
+| `Client.hpp`                                      | **Hippo** | Mohammed implements        |
+| `Channel.hpp`                                     | **Hippo** | Noura implements           |
+| `Command.hpp`                                     | **Hippo** | Mohammed implements parser |
+| `Replies.hpp`                                     | **Hippo** | Centralized codes          |
+| `Server.cpp`, `ServerRun.cpp`, `ServerClient.cpp` | Mohammed  | Core engine                |
+| `Client.cpp`, `ClientBuffer.cpp`                  | Mohammed  | Buffer, auth state         |
+| `main.cpp`, `Makefile`                            | Mohammed  | Entry, build               |
+| `Command.cpp`                                     | Mohammed  | Parser                     |
+| `Pass.cpp`, `Nick.cpp`, `User.cpp`, `Quit.cpp`    | Mohammed  | Auth                       |
+| `Utils.cpp`, `Replies.cpp`                        | Mohammed  | Helpers                    |
+| `Channel.cpp`                                     | Noura     | Membership, modes          |
+| `Join.cpp`, `Part.cpp`                            | Noura     | Channel entry/exit         |
+| `Privmsg.cpp`                                     | Noura     | Messaging                  |
+| `Kick.cpp`, `Invite.cpp`, `Topic.cpp`             | Noura     | Operator commands          |
+| `Mode.cpp`                                        | Noura     | Mode handler               |
+| `tests/*.sh`                                      | **Hippo** | Integration tests          |
 
 ---
 
