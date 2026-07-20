@@ -4,6 +4,7 @@
 # include <string>
 # include <set>
 # include <map>
+# include "Client.hpp"
 
 class Client;
 
@@ -62,6 +63,8 @@ class Channel
 
 		void				addInvite(Client *client);
 		bool				isInvited(Client *client) const;
+
+		void				broadcast(const std::string &message, Client *exclude = 0);
 
 };
 
