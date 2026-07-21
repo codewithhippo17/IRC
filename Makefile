@@ -26,9 +26,10 @@ INC = -I includes/
 		srcs/Commands/Mode.cpp \
 		srcs/Commands/Part.cpp \
 		srcs/Commands/Quit.cpp \
+		srcs/Commands/Ping.cpp \
+		srcs/Commands/Whois.cpp \
 		srcs/Command/Command.cpp \
-		srcs/Utils/Utils.cpp \
-		srcs/Utils/Replies.cpp
+		srcs/Utils/Utils.cpp
 
 SRCS =	srcs/main.cpp \
 		srcs/Channel/Channel.cpp \

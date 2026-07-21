@@ -1,71 +1,77 @@
 #ifndef CHANNEL_HPP
-# define CHANNEL_HPP
+#define CHANNEL_HPP
 
-# include <string>
-# include <set>
-# include <map>
-# include "Client.hpp"
+#include <string>
+#include <set>
 
 class Client;
 
 class Channel
 {
-    private:
-        std::string _name;
-        std::string _topic;
-        std::set<Client *>  _members;
-        std::set<Client *>  _operators;
-        std::set<Client *>  _invited;
+public:
+	Channel();
+	Channel(const std::string &name);
+	~Channel();
 
-        bool    _inviteOnly;
-        bool    _topicRestricted;
-        bool    _hasKey;
-        std::string	    _key;
-        bool    _hasUserLimit;
-        size_t  _userLimit;
+	/* ── Name ───────────────────────────────────────────────────────────── */
+	const std::string &getName() const;
 
-	public:
-		Channel(const std::string &name);
-		~Channel();
+	/* ── Members ────────────────────────────────────────────────────────── */
+	void addMember(Client *client);
+	void removeMember(Client *client);
+	bool isMember(Client *client) const;
+	int getMemberCount() const;
+	std::set<Client *> &getMembers();
 
-		const std::string	&getName() const;
+	/* ── Operators ──────────────────────────────────────────────────────── */
+	void addOperator(Client *client);
+	void removeOperator(Client *client);
+	bool isOperator(Client *client) const;
 
+	/* ── Invitations (for +i mode) ──────────────────────────────────────── */
+	void addInvited(Client *client);
+	void removeInvited(Client *client);
+	bool isInvited(Client *client) const;
 
-		void				addClient(Client *client);
-		void				removeClient(Client *client);
-		bool				isMember(Client *client) const;
-		const std::set<Client *> &getMembers() const;
+	/* ── Topic ──────────────────────────────────────────────────────────── */
+	const std::string &getTopic() const;
+	void setTopic(const std::string &topic);
 
+	/* ── Mode flags ─────────────────────────────────────────────────────── */
+	bool isInviteOnly() const;
+	void setInviteOnly(bool val);
+	bool isTopicRestricted() const;
+	void setTopicRestricted(bool val);
+	bool hasKey() const;
+	void setKey(const std::string &key);
+	const std::string &getKey() const;
+	void removeKey();
+	bool hasLimit() const;
+	void setLimit(int limit);
+	int getLimit() const;
+	void removeLimit();
 
-		void				addOperator(Client *client);
-		void				removeOperator(Client *client);
-		bool				isOperator(Client *client) const;
+	/* ── Broadcast message to all members (except 'exclude') ────────────── */
+	void broadcast(const std::string &message, Client *exclude = 0);
 
+	/* ── Mode string for RPL_CHANNELMODEIS ──────────────────────────────── */
+	std::string getModeString() const;
 
-		const std::string	&getTopic() const;
-		void				setTopic(const std::string &topic);
+private:
+	std::string _name;
+	std::string _topic;
+	std::string _key;
+	int _userLimit;
 
+	std::set<Client *> _members;
+	std::set<Client *> _operators;
+	std::set<Client *> _invited;
 
-		bool				isInviteOnly() const;
-		void				setInviteOnly(bool value);
-		bool				isTopicRestricted() const;
-		void				setTopicRestricted(bool value);
-
-		bool				hasKey() const;
-		const std::string	&getKey() const;
-		void				setKey(const std::string &key);
-		void				removeKey();
-
-		bool				hasUserLimit() const;
-		size_t				getUserLimit() const;
-		void				setUserLimit(size_t limit);
-		void				removeUserLimit();
-
-		void				addInvite(Client *client);
-		bool				isInvited(Client *client) const;
-
-		void				broadcast(const std::string &message, Client *exclude = 0);
-
+	/* Mode flags */
+	bool _inviteOnly;	   /* +i */
+	bool _topicRestricted; /* +t */
+	bool _hasKey;		   /* +k */
+	bool _hasLimit;		   /* +l */
 };
 
 #endif
