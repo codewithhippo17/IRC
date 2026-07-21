@@ -2,16 +2,17 @@
 
 void Server::_cmdMode(Client &client, const Command &cmd)
 {
-    std::string ChannelName = cmd.getParams()[0];
-    Channel *channel = _channelManager.getChannel(ChannelName);
-
-    if(!channel)
+    std::string channelName = cmd.getParams()[0];
+    std::map<std::string, Channel>::iterator it = _channels.find(channelName);
+    
+    if(it == _channels.end())
     {
         sendReply(client, ERR_NOSUCHCHANNEL);
         return ;
     }
+    Channel &channel = it->second;
 
-    if(!channel->isOperator(&client))
+    if(!channel.isOperator(&client))
     {
         sendReply(client, ERR_CHANOPRIVSNEEDED);
         return ;
@@ -37,13 +38,13 @@ void Server::_cmdMode(Client &client, const Command &cmd)
 
         if(c == 'i')
         {
-            channel->setInviteOnly(adding);
+            channel.setInviteOnly(adding);
             continue;
         }
 
         if(c == 't')
         {
-            channel->setTopicRestricted(adding);
+            channel.setTopicRestricted(adding);
             continue;
         }
 
@@ -58,11 +59,11 @@ void Server::_cmdMode(Client &client, const Command &cmd)
                 }
                 std::string key = cmd.getParams()[argIndex];
                 argIndex++;
-                channel->setKey(key);
+                channel.setKey(key);
             }
             else
             {
-                channel->removeKey();
+                channel.removeKey();
             }
             continue;
         }
@@ -81,11 +82,11 @@ void Server::_cmdMode(Client &client, const Command &cmd)
                 size_t limit;
                 ss >> limit;
                 argIndex++;
-                channel->setUserLimit(limit);
+                channel.setUserLimit(limit);
             }
             else
             {
-                channel->removeUserLimit();
+                channel.removeUserLimit();
             }
             continue;
         }
@@ -100,17 +101,17 @@ void Server::_cmdMode(Client &client, const Command &cmd)
             std::string targetNick = cmd.getParams()[argIndex];
             argIndex++;
 
-            Client *target = getClientByNickname(targetNick);
-            if (!target || !channel->isMember(target))
+            Client *target = _findClientByNick(targetNick);
+            if (!target || !channel.isMember(target))
             {
                 sendReply(client, ERR_USERNOTINCHANNEL);
                 continue;
             }
 
             if (adding)
-                channel->addOperator(target);
+                channel.addOperator(target);
             else
-                channel->removeOperator(target);
+                channel.removeOperator(target);
             continue;
         }
         

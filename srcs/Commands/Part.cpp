@@ -4,26 +4,28 @@ void Server::_cmdPart(Client &client, const Command &cmd)
 {
 	std::string channelName = cmd.getParams()[0];
 
-    Channel *channel = _channelManager.getChannel(channelName);
-    if(!channel)
+    std::map<std::string, Channel>::iterator it = _channels.find(channelName);
+    
+    if(it == _channels.end())
     {
         sendReply(client, ERR_NOSUCHCHANNEL);
-        return;
+        return ;
     }
+    Channel &channel = it->second;
 
-    if(!channel->isMember(&client))
+    if(!channel.isMember(&client))
     {
         sendReply(client, ERR_NOTONCHANNEL);
         return;
     }
     
     std::string partMsg = ":" + client.getNickname() + " PART " + channelName;
-    channel->broadcast(partMsg, 0);
+    channel.broadcast(partMsg, 0);
 
-    channel->removeClient(&client);
+    channel.removeClient(&client);
 
-    if(channel->getMembers().empty())
+    if (channel.getMembers().empty())
     {
-        _channelManager.removeChannel(channelName);
+        _channels.erase(channelName);
     }
 }

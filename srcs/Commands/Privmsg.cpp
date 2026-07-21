@@ -3,28 +3,30 @@
 void Server::_cmdPrivmsg(Client &client, const Command &cmd)
 {
 	std::string target = cmd.getParams()[0];
-	std::string message = cmd.getParams().size() > 1 ? cmd.getParams()[1] : "";
+	std::string message = cmd.hasTrailing() ? cmd.getTrailing() : "";
 
 	if (target[0] == '#')
 	{
-		Channel *channel = _channelManager.getChannel(target);
-		if (!channel)
+		std::map<std::string, Channel>::iterator it = _channels.find(target);
+		
+		if(it == _channels.end())
 		{
 			sendReply(client, ERR_NOSUCHCHANNEL);
-			return;
+			return ;
 		}
+		Channel &channel = it->second;
 
-		if (!channel->isMember(&client))
+		if (!channel.isMember(&client))
 		{
 			sendReply(client, ERR_NOTONCHANNEL);
 			return;
 		}
 		std::string fullMsg = ":" + client.getNickname() + " PRIVMSG " + target + " :" + message;
-		channel->broadcast(fullMsg, &client);
+		channel.broadcast(fullMsg, &client);
 	}
 	else
 	{
-		Client *targetClient = getClientByNickname(target);
+		Client *targetClient = _findClientByNick(target);
 		if (!targetClient)
 		{
 			sendReply(client, ERR_NOSUCHNICK);

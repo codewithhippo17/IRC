@@ -1,36 +1,38 @@
 #include "../../includes/Server.hpp"
 
-
 void Server::_cmdInvite(Client &client, const Command &cmd)
 {
     std::string targetNick = cmd.getParams()[0];
     std::string channelName = cmd.getParams().size() > 1 ? cmd.getParams()[1] : "" ;
 
-    Channel *channel = _channelManager.getChannel(channelName);
-    if (!channel)
+    std::map<std::string, Channel>::iterator it = _channels.find(channelName);
+
+    if(it == _channels.end())
     {
         sendReply(client, ERR_NOSUCHCHANNEL);
         return;
     }
-    if (!channel->isOperator(&client))
+    Channel &channel = it->second;
+    
+    if (!channel.isOperator(&client))
     {
         sendReply(client, ERR_CHANOPRIVSNEEDED);
         return;
     }
 
-    Client *target = getClientByNickname(targetNick);
+    Client *target = _findClientByNick(targetNick);
     if (!target)
     {
         sendReply(client, ERR_NOSUCHNICK);
         return;
     }
-    if (channel->isMember(target))
+    if (channel.isMember(target))
     {
         sendReply(client, ERR_USERONCHANNEL);
         return;
     }
 
-    channel->addInvite(target);
+    channel.addInvite(target);
 
     std::string inviteMsg = ":" + client.getNickname() + " INVITE " + targetNick + " " + channelName;
     
