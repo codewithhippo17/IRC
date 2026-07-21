@@ -1,4 +1,5 @@
 #include "../../includes/Channel.hpp"
+#include "../../includes/Client.hpp"
 
 /* ── Construction / Destruction ─────────────────────────────────────────── */
 Channel::Channel() : _userLimit(0), _inviteOnly(false), _topicRestricted(false),
@@ -108,7 +109,12 @@ void Channel::removeLimit()                 { _userLimit = 0; _hasLimit = false;
 /* ── Broadcast ─────────────────────────────────────────────────────────── */
 void Channel::broadcast(const std::string &message, Client *exclude)
 {
-    (void)exclude; (void)message;
+    for (std::set<Client *>::iterator it = _members.begin();
+         it != _members.end(); ++it)
+    {
+        if (*it != exclude)
+            (*it)->sendMessage(message + "\r\n");
+    }
 }
 
 /* ── Mode string for RPL_CHANNELMODEIS ─────────────────────────────────── */
