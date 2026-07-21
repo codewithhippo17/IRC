@@ -1,4 +1,5 @@
 #include "../../includes/Server.hpp"
+#include <sstream>
 
 void Server::_cmdMode(Client &client, const Command &cmd)
 {
@@ -7,14 +8,14 @@ void Server::_cmdMode(Client &client, const Command &cmd)
     
     if(it == _channels.end())
     {
-        sendReply(client, ERR_NOSUCHCHANNEL);
+        _sendReply(client, ERR_NOSUCHCHANNEL);
         return ;
     }
     Channel &channel = it->second;
 
     if(!channel.isOperator(&client))
     {
-        sendReply(client, ERR_CHANOPRIVSNEEDED);
+        _sendReply(client, ERR_CHANOPRIVSNEEDED);
         return ;
     }
 
@@ -54,7 +55,7 @@ void Server::_cmdMode(Client &client, const Command &cmd)
             {
                 if(argIndex >= cmd.getParams().size())
                 {
-                    sendReply(client, ERR_NEEDMOREPARAMS);
+                    _sendReply(client, ERR_NEEDMOREPARAMS);
                     continue;
                 }
                 std::string key = cmd.getParams()[argIndex];
@@ -74,19 +75,19 @@ void Server::_cmdMode(Client &client, const Command &cmd)
             {
                 if(argIndex >= cmd.getParams().size())
                 {
-                    sendReply(client, ERR_NEEDMOREPARAMS);
+                    _sendReply(client, ERR_NEEDMOREPARAMS);
                     continue;
                 }
                 std::string limitstr = cmd.getParams()[argIndex];
-                std::stringstream ss(limitstr);
-                size_t limit;
+                std::istringstream ss(limitstr);
+                int limit;
                 ss >> limit;
                 argIndex++;
-                channel.setUserLimit(limit);
+                channel.setLimit(limit);
             }
             else
             {
-                channel.removeUserLimit();
+                channel.removeLimit();
             }
             continue;
         }
@@ -95,7 +96,7 @@ void Server::_cmdMode(Client &client, const Command &cmd)
         {
             if (argIndex >= cmd.getParams().size())
             {
-                sendReply(client, ERR_NEEDMOREPARAMS);
+                _sendReply(client, ERR_NEEDMOREPARAMS);
                 continue;
             }
             std::string targetNick = cmd.getParams()[argIndex];
@@ -104,7 +105,7 @@ void Server::_cmdMode(Client &client, const Command &cmd)
             Client *target = _findClientByNick(targetNick);
             if (!target || !channel.isMember(target))
             {
-                sendReply(client, ERR_USERNOTINCHANNEL);
+                _sendReply(client, ERR_USERNOTINCHANNEL);
                 continue;
             }
 

@@ -7,14 +7,14 @@ void Server::_cmdKick(Client &client, const Command &cmd)
 	std::map<std::string, Channel>::iterator it = _channels.find(channelName);
 	if (it == _channels.end())
 	{
-		sendReply(client, ERR_NOSUCHCHANNEL);
+		_sendReply(client, ERR_NOSUCHCHANNEL);
 		return;
 	}
 	Channel &channel = it->second;
 
 	if (!channel.isOperator(&client))
 	{
-		sendReply(client, ERR_CHANOPRIVSNEEDED);
+		_sendReply(client, ERR_CHANOPRIVSNEEDED);
 		return;
 	}
 
@@ -22,13 +22,13 @@ void Server::_cmdKick(Client &client, const Command &cmd)
 	Client *target = _findClientByNick(targetNick);
 	if (!target)
 	{
-		sendReply(client, ERR_NOSUCHNICK);
+		_sendReply(client, ERR_NOSUCHNICK);
 		return;
 	}
 
 	if (!channel.isMember(target))
 	{
-		sendReply(client, ERR_USERNOTINCHANNEL);
+		_sendReply(client, ERR_USERNOTINCHANNEL);
 		return;
 	}
 
@@ -38,7 +38,7 @@ void Server::_cmdKick(Client &client, const Command &cmd)
 
 	channel.broadcast(kickMsg, 0);
 
-	channel.removeClient(target);
+	channel.removeMember(target);
 
 	if (channel.getMembers().empty())
 	{

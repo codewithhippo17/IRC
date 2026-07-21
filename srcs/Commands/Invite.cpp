@@ -9,34 +9,34 @@ void Server::_cmdInvite(Client &client, const Command &cmd)
 
     if(it == _channels.end())
     {
-        sendReply(client, ERR_NOSUCHCHANNEL);
+        _sendReply(client, ERR_NOSUCHCHANNEL);
         return;
     }
     Channel &channel = it->second;
     
     if (!channel.isOperator(&client))
     {
-        sendReply(client, ERR_CHANOPRIVSNEEDED);
+        _sendReply(client, ERR_CHANOPRIVSNEEDED);
         return;
     }
 
     Client *target = _findClientByNick(targetNick);
     if (!target)
     {
-        sendReply(client, ERR_NOSUCHNICK);
+        _sendReply(client, ERR_NOSUCHNICK);
         return;
     }
     if (channel.isMember(target))
     {
-        sendReply(client, ERR_USERONCHANNEL);
+        _sendReply(client, ERR_USERONCHANNEL);
         return;
     }
 
-    channel.addInvite(target);
+    channel.addInvited(target);
 
     std::string inviteMsg = ":" + client.getNickname() + " INVITE " + targetNick + " " + channelName;
     
     target->sendMessage(inviteMsg);
 
-    sendReply(client, RPL_INVITING);
+    _sendReply(client, RPL_INVITING);
 }

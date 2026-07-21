@@ -9,6 +9,7 @@
 #include "Client.hpp"
 #include "Channel.hpp"
 #include "Command.hpp"
+#include "Replies.hpp"
 
 class Server
 {
@@ -37,6 +38,7 @@ private:
 	/* ── Message processing ─────────────────────────────────────────────── */
 	void _processMessage(Client &client, const std::string &message);
 	void _dispatchCommand(Client &client, const Command &cmd);
+	void _sendReply(Client &client, const std::string &code) const;
 
 	/* ── Channel helpers ────────────────────────────────────────────────── */
 	void _removeClientFromAllChannels(int fd);

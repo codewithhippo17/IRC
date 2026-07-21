@@ -147,3 +147,9 @@ void Server::_dispatchCommand(Client &client, const Command &cmd)
 		client.sendMessage(":" SERVER_NAME " " ERR_UNKNOWNCOMMAND " " + client.getNickname() + " " + cmdName + " :Unknown command\r\n");
 	}
 }
+
+/* ── Send IRC numeric reply ──────────────────────────────────────────── */
+void Server::_sendReply(Client &client, const std::string &code) const
+{
+	client.sendMessage(":" SERVER_NAME " " + code + " " + client.getNickname() + "\r\n");
+}

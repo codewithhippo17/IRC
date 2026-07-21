@@ -11,14 +11,14 @@ void Server::_cmdPrivmsg(Client &client, const Command &cmd)
 		
 		if(it == _channels.end())
 		{
-			sendReply(client, ERR_NOSUCHCHANNEL);
+			_sendReply(client, ERR_NOSUCHCHANNEL);
 			return ;
 		}
 		Channel &channel = it->second;
 
 		if (!channel.isMember(&client))
 		{
-			sendReply(client, ERR_NOTONCHANNEL);
+			_sendReply(client, ERR_NOTONCHANNEL);
 			return;
 		}
 		std::string fullMsg = ":" + client.getNickname() + " PRIVMSG " + target + " :" + message;
@@ -29,7 +29,7 @@ void Server::_cmdPrivmsg(Client &client, const Command &cmd)
 		Client *targetClient = _findClientByNick(target);
 		if (!targetClient)
 		{
-			sendReply(client, ERR_NOSUCHNICK);
+			_sendReply(client, ERR_NOSUCHNICK);
 			return;
 		}
 

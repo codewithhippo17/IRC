@@ -8,29 +8,29 @@ void Server::_cmdTopic(Client &client, const Command &cmd)
 
 	if (it == _channels.end())
 	{
-		sendReply(client, ERR_NOSUCHCHANNEL);
+		_sendReply(client, ERR_NOSUCHCHANNEL);
 		return;
 	}
 	Channel &channel = it->second;
 
 	if (!channel.isMember(&client))
 	{
-		sendReply(client, ERR_NOTONCHANNEL);
+		_sendReply(client, ERR_NOTONCHANNEL);
 		return;
 	}
 
 	if (!cmd.hasTrailing())
 	{
 		if (channel.getTopic().empty())
-			sendReply(client, RPL_NOTOPIC);
+			_sendReply(client, RPL_NOTOPIC);
 		else
-			sendReply(client, RPL_TOPIC);
+			_sendReply(client, RPL_TOPIC);
 		return;
 	}
 
 	if (channel.isTopicRestricted() && !channel.isOperator(&client))
 	{
-		sendReply(client, ERR_CHANOPRIVSNEEDED);
+		_sendReply(client, ERR_CHANOPRIVSNEEDED);
 		return;
 	}
 

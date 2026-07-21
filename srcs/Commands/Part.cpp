@@ -8,21 +8,21 @@ void Server::_cmdPart(Client &client, const Command &cmd)
     
     if(it == _channels.end())
     {
-        sendReply(client, ERR_NOSUCHCHANNEL);
+        _sendReply(client, ERR_NOSUCHCHANNEL);
         return ;
     }
     Channel &channel = it->second;
 
     if(!channel.isMember(&client))
     {
-        sendReply(client, ERR_NOTONCHANNEL);
+        _sendReply(client, ERR_NOTONCHANNEL);
         return;
     }
     
     std::string partMsg = ":" + client.getNickname() + " PART " + channelName;
     channel.broadcast(partMsg, 0);
 
-    channel.removeClient(&client);
+    channel.removeMember(&client);
 
     if (channel.getMembers().empty())
     {

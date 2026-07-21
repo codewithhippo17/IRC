@@ -21,7 +21,7 @@ void Server::_cmdJoin(Client &client, const Command &cmd)
 
     if(channel.isInviteOnly() && !channel.isInvited(&client))
     {
-        sendReply(client, ERR_INVITEONLYCHAN);
+        _sendReply(client, ERR_INVITEONLYCHAN);
 		return;
     }
 
@@ -30,18 +30,18 @@ void Server::_cmdJoin(Client &client, const Command &cmd)
         std::string providekey = cmd.getParams().size() > 1 ? cmd.getParams()[1] : "" ;
         if(providekey != channel.getKey())
         {
-            sendReply(client, ERR_BADCHANNELKEY);
+            _sendReply(client, ERR_BADCHANNELKEY);
             return;
         }
     }
 
-    if(channel.hasUserLimit() && channel-> getMembers().size() >= channel.getUserLimit())
+    if(channel.hasLimit() && channel.getMembers().size() >= static_cast<size_t>(channel.getLimit()))
     {
-        sendReply(client, ERR_CHANNELISFULL);
+        _sendReply(client, ERR_CHANNELISFULL);
 	    return;
     }
 
-    channel->addClient(&client);
+    channel.addMember(&client);
 
     std::string joinMsg = ":" + client.getNickname() + " JOIN " + channelName;
     channel.broadcast(joinMsg, 0);
