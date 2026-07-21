@@ -4,7 +4,7 @@ CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 INC = -I includes/
 
-SRCS =	srcs/main.cpp \
+#SRCS =	srcs/main.cpp \
 		srcs/Server/Server.cpp \
 		srcs/Server/ServerRun.cpp \
 		srcs/Server/ServerClient.cpp \
@@ -29,6 +29,19 @@ SRCS =	srcs/main.cpp \
 		srcs/Command/Command.cpp \
 		srcs/Utils/Utils.cpp \
 		srcs/Utils/Replies.cpp
+
+SRCS =	srcs/main.cpp \
+		srcs/Channel/Channel.cpp \
+		srcs/Channel/ChannelModes.cpp \
+		srcs/Channel/ChannelManager.cpp \
+		srcs/Commands/Join.cpp \
+		srcs/Commands/Kick.cpp \
+		srcs/Commands/Invite.cpp \
+		srcs/Commands/Privmsg.cpp \
+		srcs/Commands/Topic.cpp \
+		srcs/Commands/Part.cpp \
+		srcs/Commands/Mode.cpp \
+		srcs/Command/Command.cpp \
 
 OBJS = $(SRCS:.cpp=.o)
 

@@ -1,8 +1,20 @@
-#include "Server.hpp"
+#include "../includes/Client.hpp"
+#include "../includes/Channel.hpp"
+#include "../includes/Server.hpp"
+#include "../includes/Command.hpp"
 
-int main(int argc, char **argv)
+int main()
 {
-	(void)argc;
-	(void)argv;
-	return 0;
+    Server server;
+    Client client;
+
+    Command command("Join #chan pw");
+    
+    server._cmdJoin(client, command);
+    server._cmdTopic(client, command);
+    server._cmdMode(client, command);
+    server._cmdPrivmsg(client, command);
+    server._cmdInvite(client, command);
+    server._cmdKick(client, command);
+    server._cmdPart(client, command);
 }
