@@ -1,5 +1,3 @@
-
-
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP
 
@@ -54,7 +52,7 @@ public:
 	void removeLimit();
 
 	/* ── Broadcast message to all members (except 'exclude') ────────────── */
-	void broadcast(const std::string &message, Client *exclude);
+	void broadcast(const std::string &message, Client *exclude = 0);
 
 	/* ── Mode string for RPL_CHANNELMODEIS ──────────────────────────────── */
 	std::string getModeString() const;
