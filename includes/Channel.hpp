@@ -55,7 +55,7 @@ public:
   void broadcast(const std::string &message, Client *exclude = 0);
 
   /* ── Mode string for RPL_CHANNELMODEIS ──────────────────────────────── */
-  std::string getModeString() const;
+  // std::string getModeString() const;
 
 private:
   std::string _name;
