@@ -3,14 +3,12 @@
 
 /* ── Construction / Destruction ─────────────────────────────────────────── */
 Client::Client()
-	: _fd(-1), _passAuth(false), _nickAuth(false),
-	  _userAuth(false), _registered(false)
-{}
+    : _fd(-1), _passAuth(false), _nickAuth(false), _userAuth(false),
+      _registered(false) {}
 
 Client::Client(int fd, const std::string &hostname)
-	: _fd(fd), _passAuth(false), _nickAuth(false),
-	  _userAuth(false), _registered(false), _hostname(hostname)
-{}
+    : _fd(fd), _passAuth(false), _nickAuth(false), _userAuth(false),
+      _registered(false), _hostname(hostname) {}
 
 Client::~Client() {}
 
@@ -40,33 +38,28 @@ void Client::setHostname(const std::string &host) { _hostname = host; }
 void Client::setRealname(const std::string &real) { _realname = real; }
 
 /* ── IRC prefix :nick!user@host ─────────────────────────────────────────── */
-std::string Client::getPrefix() const
-{
-	return _nickname + "!" + _username + "@" + _hostname;
+std::string Client::getPrefix() const {
+  return _nickname + "!" + _username + "@" + _hostname;
 }
 
 /* ── Channel tracking ───────────────────────────────────────────────────── */
-void Client::addChannel(const std::string &channel)
-{
-	if (!isInChannel(channel))
-		_channels.push_back(channel);
+void Client::addChannel(const std::string &channel) {
+  if (!isInChannel(channel))
+    _channels.push_back(channel);
 }
 
-void Client::removeChannel(const std::string &channel)
-{
-	std::vector<std::string>::iterator it =
-		std::find(_channels.begin(), _channels.end(), channel);
-	if (it != _channels.end())
-		_channels.erase(it);
+void Client::removeChannel(const std::string &channel) {
+  std::vector<std::string>::iterator it =
+      std::find(_channels.begin(), _channels.end(), channel);
+  if (it != _channels.end())
+    _channels.erase(it);
 }
 
-bool Client::isInChannel(const std::string &channel) const
-{
-	return std::find(_channels.begin(), _channels.end(), channel)
-		!= _channels.end();
+bool Client::isInChannel(const std::string &channel) const {
+  return std::find(_channels.begin(), _channels.end(), channel) !=
+         _channels.end();
 }
 
-const std::vector<std::string> &Client::getChannels() const
-{
-	return _channels;
+const std::vector<std::string> &Client::getChannels() const {
+  return _channels;
 }

@@ -41,7 +41,6 @@ SRCS =	srcs/main.cpp \
 		srcs/Client/ClientBuffer.cpp \
 		srcs/Channel/Channel.cpp \
 		srcs/Channel/ChannelModes.cpp \
-		srcs/Channel/ChannelManager.cpp \
 		srcs/Commands/Pass.cpp \
 		srcs/Commands/Nick.cpp \
 		srcs/Commands/User.cpp \

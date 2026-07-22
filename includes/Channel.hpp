@@ -16,6 +16,7 @@ public:
   const std::string &getName() const;
 
   /* ── Members ────────────────────────────────────────────────────────── */
+  // NOTE: hippo should look at this.
   void addMember(Client *client);
   void removeMember(Client *client);
   bool isMember(Client *client) const;
