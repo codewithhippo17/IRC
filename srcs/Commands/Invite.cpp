@@ -9,34 +9,35 @@ void Server::_cmdInvite(Client &client, const Command &cmd)
 
     if(it == _channels.end())
     {
-        sendReply(client, ERR_NOSUCHCHANNEL);
+        client.sendMessage(":" SERVER_NAME " " ERR_NOSUCHCHANNEL " " + client.getNickname() + " " + channelName + " :No such Channel\r\n");
         return;
     }
     Channel &channel = it->second;
     
     if (!channel.isOperator(&client))
     {
-        sendReply(client, ERR_CHANOPRIVSNEEDED);
+        client.sendMessage(":" SERVER_NAME " " ERR_CHANOPRIVSNEEDED " " + client.getNickname() + " " + channelName + " :You're not channel operator\r\n");
         return;
     }
 
     Client *target = _findClientByNick(targetNick);
     if (!target)
     {
-        sendReply(client, ERR_NOSUCHNICK);
+        client.sendMessage(":" SERVER_NAME " " ERR_NOSUCHNICK " " + client.getNickname() + " " + targetNick + " :No such nick/channel\r\n");
         return;
     }
+
     if (channel.isMember(target))
     {
-        sendReply(client, ERR_USERONCHANNEL);
+        client.sendMessage(":" SERVER_NAME " " ERR_USERONCHANNEL " " + client.getNickname() + " " + targetNick + " " + channelName + " :is already on channel\r\n");
         return;
     }
 
     channel.addInvite(target);
 
-    std::string inviteMsg = ":" + client.getNickname() + " INVITE " + targetNick + " " + channelName;
+    std::string inviteMsg = ":" + client.getNickname() + " INVITE " + targetNick + " " + channelName + "\r\n";
     
     target->sendMessage(inviteMsg);
 
-    sendReply(client, RPL_INVITING);
+    client.sendMessage(":" SERVER_NAME " " RPL_INVITING " " + client.getNickname() + " " + targetNick + " " + channelName + "\r\n");
 }

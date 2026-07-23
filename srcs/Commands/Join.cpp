@@ -21,8 +21,8 @@ void Server::_cmdJoin(Client &client, const Command &cmd)
 
     if(channel.isInviteOnly() && !channel.isInvited(&client))
     {
-        sendReply(client, ERR_INVITEONLYCHAN);
-		return;
+        client.sendMessage(":" SERVER_NAME "" ERR_INVITEONLYCHAN " " + client.getNickname() + " " + chanelName + " :Cannot join channel (+i)\r\n");
+        return;
     }
 
     if(channel.hasKey())
@@ -30,20 +30,20 @@ void Server::_cmdJoin(Client &client, const Command &cmd)
         std::string providekey = cmd.getParams().size() > 1 ? cmd.getParams()[1] : "" ;
         if(providekey != channel.getKey())
         {
-            sendReply(client, ERR_BADCHANNELKEY);
+            client.sendMessage(":" SERVER_NAME "" ERR_BADCHANNELKEY " " + client.getNickname() + " " + chanelName + " :Cannot join channel (+k)\r\n");
             return;
         }
     }
 
     if(channel.hasUserLimit() && channel-> getMembers().size() >= channel.getUserLimit())
     {
-        sendReply(client, ERR_CHANNELISFULL);
+        client.sendMessage(":" SERVER_NAME "" ERR_CHANNELISFULL " " + client.getNickname() + " " + chanelName + " :Cannot join channel (+l)\r\n");
 	    return;
     }
 
     channel->addClient(&client);
 
-    std::string joinMsg = ":" + client.getNickname() + " JOIN " + channelName;
+    std::string joinMsg = ":" + client.getNickname() + " JOIN " + channelName + "\r\n";
     channel.broadcast(joinMsg, 0);
 
 }

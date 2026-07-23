@@ -7,14 +7,14 @@ void Server::_cmdMode(Client &client, const Command &cmd)
     
     if(it == _channels.end())
     {
-        sendReply(client, ERR_NOSUCHCHANNEL);
+        client.sendMessage(":" SERVER_NAME " " ERR_NOSUCHCHANNEL " " + client.getNickname() + " " + channelName + " :No such Channel\r\n");
         return ;
     }
     Channel &channel = it->second;
 
     if(!channel.isOperator(&client))
     {
-        sendReply(client, ERR_CHANOPRIVSNEEDED);
+        client.sendMessage(":" SERVER_NAME " " ERR_CHANOPRIVSNEEDED " " + client.getNickname() + " " + channelName + " :You're not channel operator\r\n");
         return ;
     }
 
@@ -54,7 +54,7 @@ void Server::_cmdMode(Client &client, const Command &cmd)
             {
                 if(argIndex >= cmd.getParams().size())
                 {
-                    sendReply(client, ERR_NEEDMOREPARAMS);
+                    client.sendMessage(":" SERVER_NAME " " ERR_NEEDMOREPARAMS " " + client.getNickname() + " " + cmd.getName() + " :Not enough parameters\r\n");
                     continue;
                 }
                 std::string key = cmd.getParams()[argIndex];
@@ -74,7 +74,7 @@ void Server::_cmdMode(Client &client, const Command &cmd)
             {
                 if(argIndex >= cmd.getParams().size())
                 {
-                    sendReply(client, ERR_NEEDMOREPARAMS);
+                    client.sendMessage(":" SERVER_NAME " " ERR_NEEDMOREPARAMS " " + client.getNickname() + " " + cmd.getName() + " :Not enough parameters\r\n");
                     continue;
                 }
                 std::string limitstr = cmd.getParams()[argIndex];
@@ -95,7 +95,7 @@ void Server::_cmdMode(Client &client, const Command &cmd)
         {
             if (argIndex >= cmd.getParams().size())
             {
-                sendReply(client, ERR_NEEDMOREPARAMS);
+                client.sendMessage(":" SERVER_NAME " " ERR_NEEDMOREPARAMS " " + client.getNickname() + " " + cmd.getName() + " :Not enough parameters\r\n");
                 continue;
             }
             std::string targetNick = cmd.getParams()[argIndex];
@@ -104,7 +104,7 @@ void Server::_cmdMode(Client &client, const Command &cmd)
             Client *target = _findClientByNick(targetNick);
             if (!target || !channel.isMember(target))
             {
-                sendReply(client, ERR_USERNOTINCHANNEL);
+                client.sendMessage(":" SERVER_NAME " " ERR_USERNOTINCHANNEL " " + client.getNickname() + " " + targetNick + " " + channelName + " :They aren't on that channel\r\n");
                 continue;
             }
 

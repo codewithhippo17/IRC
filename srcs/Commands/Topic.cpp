@@ -8,35 +8,35 @@ void Server::_cmdTopic(Client &client, const Command &cmd)
 
 	if (it == _channels.end())
 	{
-		sendReply(client, ERR_NOSUCHCHANNEL);
+		client.sendMessage(":" SERVER_NAME " " ERR_NOSUCHCHANNEL " " + client.getNickname() + " " + channelName + " :No such Channel\r\n");
 		return;
 	}
 	Channel &channel = it->second;
 
 	if (!channel.isMember(&client))
 	{
-		sendReply(client, ERR_NOTONCHANNEL);
+		client.sendMessage(":" SERVER_NAME " " ERR_NOTONCHANNEL " " + client.getNickname() + " " + channelName + " :You're not on that channel\r\n");
 		return;
 	}
 
 	if (!cmd.hasTrailing())
 	{
 		if (channel.getTopic().empty())
-			sendReply(client, RPL_NOTOPIC);
+			client.sendMessage(":" SERVER_NAME " " RPL_NOTOPIC " " + client.getNickname() + " " + channelName + " :No topic is set\r\n");
 		else
-			sendReply(client, RPL_TOPIC);
+			client.sendMessage(":" SERVER_NAME " " RPL_TOPIC " " + client.getNickname() + " " + channelName + " :" + channel.getTopic() + "\r\n");
 		return;
 	}
 
 	if (channel.isTopicRestricted() && !channel.isOperator(&client))
 	{
-		sendReply(client, ERR_CHANOPRIVSNEEDED);
+		client.sendMessage(":" SERVER_NAME " " ERR_CHANOPRIVSNEEDED " " + client.getNickname() + " " + channelName + " :You're not channel operator\r\n");
 		return;
 	}
 
 	std::string newTopic = cmd.getTrailing();
 	channel.setTopic(newTopic);
 
-	std::string topicMsg = ":" + client.getNickname() + " TOPIC " + channelName + " :" + newTopic;
+	std::string topicMsg = ":" + client.getNickname() + " TOPIC " + channelName + " :" + newTopic + "\r\n";
 	channel.broadcast(topicMsg, 0);
 }
