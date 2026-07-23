@@ -37,9 +37,9 @@ void Server::_handleClientData(int fd)
 	}
 
 	Client *client = _clients[fd];
-	client->appendToBuffer(std::string(buf, bytes));
+	client->appendToBuffer(std::string(buf, bytes));//NOTE: append received data to client's buffer
 
-	std::vector<std::string> messages = client->extractMessages();
+	std::vector<std::string> messages = client->extractMessages();//NOTE: extract messages from buffer
 	for (size_t i = 0; i < messages.size(); i++)
 	{
 		_processMessage(*client, messages[i]);
@@ -56,21 +56,21 @@ void Server::_handleClientWrite(int fd)
 		return;
 
 	Client *client = it->second;
-	if (!client->hasPendingSend())
+	if (!client->hasPendingSend())//NOTE: if there is no data to send, return
 		return;
 
-	const std::string &buf = client->getSendBuffer();
+	const std::string &buf = client->getSendBuffer();//NOTE: get data to send
 	int sent = send(fd, buf.c_str(), buf.size(), 0);
 
 	if (sent > 0)
 	{
 		std::string remaining = buf.substr(sent);
-		client->clearSendBuffer();
+		client->clearSendBuffer();//NOTE: clear sent data from buffer
 		if (!remaining.empty())
-			client->appendToSendBuffer(remaining);
+			client->appendToSendBuffer(remaining);//NOTE: append remaining data to buffer
 	}
 
-	if (!client->hasPendingSend())
+	if (!client->hasPendingSend())//NOTE: if there is no data to send, set POLLIN
 	{
 		for (size_t i = 0; i < _pollFds.size(); i++)
 		{

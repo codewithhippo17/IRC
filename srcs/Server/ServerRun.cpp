@@ -15,7 +15,7 @@ void Server::runServer()
 			int fd = _pollFds[i].fd;
 			if (fd != _listenFd && _clients.find(fd) != _clients.end())
 			{
-				if (_clients[fd]->hasPendingSend())
+				if (_clients[fd]->hasPendingSend())//NOTE: if there is data to send, set POLLOUT
 					_pollFds[i].events = POLLIN | POLLOUT;
 				else
 					_pollFds[i].events = POLLIN;

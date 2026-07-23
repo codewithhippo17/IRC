@@ -20,13 +20,13 @@ void Server::_removeClientFromAllChannels(int fd)
 			continue;
 
 		std::string quitMsg = ":" + client->getPrefix() + " QUIT :Connection lost\r\n";
-		chanIt->second.broadcast(quitMsg, client);
+		chanIt->second.broadcast(quitMsg, client);//NOTE: send quit message to all members
 
-		chanIt->second.removeMember(client);
-		chanIt->second.removeOperator(client);
-		chanIt->second.removeInvited(client);
+		chanIt->second.removeMember(client);//NOTE: remove client from channel
+		chanIt->second.removeOperator(client);//NOTE: remove client from operators
+		chanIt->second.removeInvited(client);//NOTE: remove client from invited
 
-		if (chanIt->second.getMemberCount() == 0)
+		if (chanIt->second.getMemberCount() == 0)//NOTE: remove channel if empty
 			_channels.erase(chanIt);
 	}
 }
