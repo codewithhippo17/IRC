@@ -58,21 +58,28 @@ SRCS =	srcs/main.cpp \
 		srcs/Utils/Utils.cpp
 
 OBJS = $(SRCS:.cpp=.o)
-
+BONUS_NAME = ircbot
+BONUS_SRCS = bonus/bot.cpp
+BONUS_OBJS = $(BONUS_SRCS:.cpp=.o)
 all: $(NAME)
+
+bonus: $(NAME) $(BONUS_NAME)
 
 $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
+
+$(BONUS_NAME): $(BONUS_OBJS)
+	$(CXX) $(CXXFLAGS) $(BONUS_OBJS) -o $(BONUS_NAME)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJS) $(BONUS_OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(BONUS_NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus

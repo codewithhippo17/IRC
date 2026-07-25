@@ -3,6 +3,13 @@
 
 void Server::_cmdMode(Client &client, const Command &cmd)
 {
+    // zedna hadchi: verify parameters bach maycrachach
+    if (cmd.getParams().empty())
+    {
+        _sendReply(client, ERR_NEEDMOREPARAMS);
+        return;
+    }
+
     std::string channelName = cmd.getParams()[0];
     std::map<std::string, Channel>::iterator it = _channels.find(channelName);
     
@@ -17,6 +24,12 @@ void Server::_cmdMode(Client &client, const Command &cmd)
     {
         _sendReply(client, ERR_CHANOPRIVSNEEDED);
         return ;
+    }
+
+    // zedna hadchi: nprotectiw mn crash ila jab lah kan ghi 1 param (ex: MODE #channel)
+    if (cmd.getParams().size() < 2)
+    {
+        return;
     }
 
     std::string modes = cmd.getParams()[1];

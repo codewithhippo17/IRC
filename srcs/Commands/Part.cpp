@@ -2,6 +2,13 @@
 
 void Server::_cmdPart(Client &client, const Command &cmd)
 {
+    // zedna hadchi: check if parameters exist bach mayw9e3ch segfault
+    if (cmd.getParams().empty())
+    {
+        _sendReply(client, ERR_NEEDMOREPARAMS);
+        return;
+    }
+
 	std::string channelName = cmd.getParams()[0];
 
     std::map<std::string, Channel>::iterator it = _channels.find(channelName);

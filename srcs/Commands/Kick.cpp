@@ -2,6 +2,13 @@
 
 void Server::_cmdKick(Client &client, const Command &cmd)
 {
+    // zedna hadchi: verify command parameters bach n7miw mn l'crash
+    if (cmd.getParams().size() < 2)
+    {
+        _sendReply(client, ERR_NEEDMOREPARAMS);
+        return;
+    }
+
 	std::string channelName = cmd.getParams()[0];
 
 	std::map<std::string, Channel>::iterator it = _channels.find(channelName);

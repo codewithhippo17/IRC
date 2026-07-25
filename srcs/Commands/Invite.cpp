@@ -2,6 +2,13 @@
 
 void Server::_cmdInvite(Client &client, const Command &cmd)
 {
+    // zedna hadchi: check if we have both user and channel
+    if (cmd.getParams().size() < 2)
+    {
+        _sendReply(client, ERR_NEEDMOREPARAMS);
+        return;
+    }
+
     std::string targetNick = cmd.getParams()[0];
     std::string channelName = cmd.getParams().size() > 1 ? cmd.getParams()[1] : "" ;
 
