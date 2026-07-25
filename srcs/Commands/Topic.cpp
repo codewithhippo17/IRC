@@ -48,6 +48,6 @@ void Server::_cmdTopic(Client &client, const Command &cmd) {
   channel.setTopic(newTopic);
 
   std::string topicMsg =
-      ":" + client.getNickname() + " TOPIC " + channelName + " :" + newTopic;
+      ":" + client.getPrefix() + " TOPIC " + channelName + " :" + newTopic;
   channel.broadcast(topicMsg, 0);
 }

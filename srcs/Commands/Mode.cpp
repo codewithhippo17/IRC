@@ -18,15 +18,32 @@ void Server::_cmdMode(Client &client, const Command &cmd) {
   }
   Channel &channel = it->second;
 
+  // Mode query (no mode flags) — any member can see channel modes
+  if (cmd.getParams().size() < 2) {
+    std::string modeStr = "+";
+    if (channel.isInviteOnly()) modeStr += "i";
+    if (channel.isTopicRestricted()) modeStr += "t";
+    if (channel.hasKey()) modeStr += "k";
+    if (channel.hasLimit()) modeStr += "l";
+    std::string modeParams;
+    if (channel.hasKey()) modeParams += " " + channel.getKey();
+    if (channel.hasLimit()) {
+      std::ostringstream oss;
+      oss << channel.getLimit();
+      modeParams += " " + oss.str();
+    }
+    client.sendMessage(":" SERVER_NAME " " RPL_CHANNELMODEIS " " +
+                       client.getNickname() + " " + channelName + " " +
+                       modeStr + modeParams + "\r\n");
+    return;
+  }
+
   if (!channel.isOperator(&client)) {
     client.sendMessage(":" SERVER_NAME " " ERR_CHANOPRIVSNEEDED " "
                        + client.getNickname() + " " + channelName
                        + " :You're not channel operator\r\n");
     return;
   }
-
-  if (cmd.getParams().size() < 2)
-    return;
 
   std::string modes = cmd.getParams()[1];
   size_t argIndex = 2;

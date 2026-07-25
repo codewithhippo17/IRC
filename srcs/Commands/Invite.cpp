@@ -43,7 +43,7 @@ void Server::_cmdInvite(Client &client, const Command &cmd) {
   channel.addInvited(target);
 
   std::string inviteMsg =
-      ":" + client.getNickname() + " INVITE " + targetNick + " " + channelName;
+      ":" + client.getPrefix() + " INVITE " + targetNick + " " + channelName;
   target->sendMessage(inviteMsg + "\r\n");
 
   client.sendMessage(":" SERVER_NAME " " RPL_INVITING " "

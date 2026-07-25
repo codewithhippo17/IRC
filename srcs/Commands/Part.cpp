@@ -25,7 +25,7 @@ void Server::_cmdPart(Client &client, const Command &cmd) {
     return;
   }
 
-  std::string partMsg = ":" + client.getNickname() + " PART " + channelName;
+  std::string partMsg = ":" + client.getPrefix() + " PART " + channelName;
   channel.broadcast(partMsg, 0);
 
   channel.removeMember(&client);

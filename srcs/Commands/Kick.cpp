@@ -43,7 +43,7 @@ void Server::_cmdKick(Client &client, const Command &cmd) {
 
   std::string reason =
       cmd.hasTrailing() ? cmd.getTrailing() : client.getNickname();
-  std::string kickMsg = ":" + client.getNickname() + " KICK " + channelName +
+  std::string kickMsg = ":" + client.getPrefix() + " KICK " + channelName +
                         " " + targetNick + " :" + reason;
 
   channel.broadcast(kickMsg, 0);
