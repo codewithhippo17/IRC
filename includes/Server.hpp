@@ -5,9 +5,18 @@
 #include "Client.hpp"
 #include "Command.hpp"
 #include "Replies.hpp"
+#include <arpa/inet.h>
+#include <cstring>
+#include <fcntl.h>
+#include <iostream>
 #include <map>
+#include <netinet/in.h>
 #include <poll.h>
+#include <sstream>
+#include <stdexcept>
 #include <string>
+#include <sys/socket.h>
+#include <unistd.h>
 #include <vector>
 
 class Server {

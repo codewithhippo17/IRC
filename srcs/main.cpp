@@ -1,9 +1,7 @@
 #include "Colors.hpp"
 #include "Server.hpp"
-#include <cctype>
 #include <csignal>
 #include <cstdlib>
-#include <iostream>
 
 /*
 ** isValidPort — check that the port string is a number in [1024, 65535]

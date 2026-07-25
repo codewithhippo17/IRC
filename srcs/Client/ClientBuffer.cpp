@@ -1,6 +1,4 @@
-#include "../../includes/Client.hpp"
-#include <sys/socket.h>
-#include <unistd.h>
+#include "Client.hpp"
 
 /* ── Read buffer (partial TCP messages) ─────────────────────────────────── */
 void Client::appendToBuffer(const std::string &data) { _readBuffer += data; }

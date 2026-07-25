@@ -1,4 +1,4 @@
-#include "../../includes/Server.hpp"
+#include "Server.hpp"
 
 void Server::_cmdInvite(Client &client, const Command &cmd) {
   std::string targetNick = cmd.getParams()[0];

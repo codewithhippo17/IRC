@@ -1,5 +1,4 @@
-#include "../../includes/Server.hpp"
-#include <sstream>
+#include "Server.hpp"
 
 void Server::_cmdMode(Client &client, const Command &cmd) {
   std::string channelName = cmd.getParams()[0];

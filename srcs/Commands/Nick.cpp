@@ -1,7 +1,4 @@
-#include "Replies.hpp"
 #include "Server.hpp"
-#include "Utils.hpp"
-#include <cctype>
 
 static bool isValidNick(const std::string &nick) {
   if (nick.empty() || nick.length() > 9)

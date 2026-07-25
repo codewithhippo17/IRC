@@ -1,7 +1,11 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
+#include <algorithm>
+#include <cctype>
 #include <string>
+#include <sys/socket.h>
+#include <unistd.h>
 #include <vector>
 
 /* ── String helpers ─────────────────────────────────────────────────────── */

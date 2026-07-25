@@ -1,9 +1,5 @@
 #include "Colors.hpp"
-#include "Replies.hpp"
 #include "Server.hpp"
-#include "Utils.hpp"
-#include <iostream>
-#include <sys/socket.h>
 
 void Server::_initCommandMap() {
   _cmdMap["PASS"] = &Server::_cmdPass;

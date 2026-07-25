@@ -1,6 +1,4 @@
-#include "Replies.hpp"
 #include "Server.hpp"
-#include "Utils.hpp"
 
 void Server::_cmdWhois(Client &client, const Command &cmd) {
   if (cmd.getParams().empty()) {

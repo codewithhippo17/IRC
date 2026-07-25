@@ -1,6 +1,5 @@
 #include "Colors.hpp"
 #include "Server.hpp"
-#include <iostream>
 
 void Server::runServer() {
   std::cout << CLR_CYAN << "[Server] Waiting for connections..." << CLR_RESET

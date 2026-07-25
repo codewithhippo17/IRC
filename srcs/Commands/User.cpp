@@ -1,7 +1,5 @@
 
-#include "Replies.hpp"
 #include "Server.hpp"
-#include "Utils.hpp"
 
 void Server::_cmdUser(Client &client, const Command &cmd) {
   if (client.isRegistered()) {

@@ -1,6 +1,4 @@
-#include "Replies.hpp"
 #include "Server.hpp"
-#include "Utils.hpp"
 
 void Server::_cmdQuit(Client &client, const Command &cmd) {
   std::string reason = cmd.hasTrailing() ? cmd.getTrailing() : "Client Quit";

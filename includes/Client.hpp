@@ -1,7 +1,10 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
+#include <algorithm>
 #include <string>
+#include <sys/socket.h>
+#include <unistd.h>
 #include <vector>
 
 class Client {

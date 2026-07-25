@@ -1,4 +1,4 @@
-#include "../../includes/Server.hpp"
+#include "Server.hpp"
 
 void Server::_cmdPrivmsg(Client &client, const Command &cmd) {
   std::string target = cmd.getParams()[0];

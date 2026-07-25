@@ -1,6 +1,4 @@
-#include "Replies.hpp"
 #include "Server.hpp"
-#include "Utils.hpp"
 
 void Server::_cmdPass(Client &client, const Command &cmd) {
   if (client.isRegistered()) {

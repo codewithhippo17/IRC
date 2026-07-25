@@ -1,16 +1,5 @@
 #include "Server.hpp"
 #include "Colors.hpp"
-#include "Replies.hpp"
-#include "Utils.hpp"
-#include <cstring>
-#include <iostream>
-
-#include <arpa/inet.h>
-#include <fcntl.h>
-#include <netinet/in.h>
-#include <stdexcept>
-#include <sys/socket.h>
-#include <unistd.h>
 
 bool Server::_running = true;
 

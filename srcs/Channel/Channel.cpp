@@ -1,5 +1,5 @@
-#include "../../includes/Channel.hpp"
-#include "../../includes/Client.hpp"
+#include "Channel.hpp"
+#include "Client.hpp"
 
 /* ── Construction / Destruction ─────────────────────────────────────────── */
 Channel::Channel()
@@ -92,13 +92,3 @@ void Channel::broadcast(const std::string &message, Client *exclude) {
   }
 }
 
-/* ── Mode string for RPL_CHANNELMODEIS ─────────────────────────────────── */
-// std::string Channel::getModeString() const
-// {
-//     std::string modes = "+";
-//     if (_inviteOnly)       modes += "i";
-//     if (_topicRestricted)  modes += "t";
-//     if (_hasKey)           modes += "k";
-//     if (_hasLimit)         modes += "l";
-//     return modes;
-// }
