@@ -59,6 +59,17 @@ void Server::_cmdJoin(Client &client, const Command &cmd) {
   std::string joinMsg = ":" + client.getPrefix() + " JOIN :" + channelName;
   channel.broadcast(joinMsg, &client);
 
+  // Send Topic to the joining client
+  if (channel.getTopic().empty()) {
+    client.sendMessage(":" SERVER_NAME " " RPL_NOTOPIC " " +
+                       client.getNickname() + " " + channelName +
+                       " :No topic is set\r\n");
+  } else {
+    client.sendMessage(":" SERVER_NAME " " RPL_TOPIC " " +
+                       client.getNickname() + " " + channelName + " :" +
+                       channel.getTopic() + "\r\n");
+  }
+
   // Send NAMES list to the joining client
   std::string namesList;
   const std::set<Client *> &members = channel.getMembers();

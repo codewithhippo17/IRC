@@ -38,6 +38,14 @@ void Server::_cmdMode(Client &client, const Command &cmd) {
     return;
   }
 
+  // Irssi automatically queries the ban list ('b'). We don't support bans.
+  // Send RPL_ENDOFBANLIST (368) so Irssi doesn't error out.
+  if (cmd.getParams().size() >= 2 && cmd.getParams()[1] == "b") {
+    client.sendMessage(":" SERVER_NAME " 368 " + client.getNickname() + " " +
+                       channelName + " :End of channel ban list\r\n");
+    return;
+  }
+
   if (!channel.isOperator(&client)) {
     client.sendMessage(":" SERVER_NAME " " ERR_CHANOPRIVSNEEDED " "
                        + client.getNickname() + " " + channelName
