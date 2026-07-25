@@ -23,6 +23,9 @@ ircserv.dSYM/
 .DS_Store
 Thumbs.db
 
+# LSP
+compile_commands.json
+
 # Debug
 *.log
 vgcore.*

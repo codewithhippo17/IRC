@@ -16,7 +16,6 @@ public:
   const std::string &getName() const;
 
   /* ── Members ────────────────────────────────────────────────────────── */
-  // NOTE: hippo should look at this.
   void addMember(Client *client);
   void removeMember(Client *client);
   bool isMember(Client *client) const;
@@ -53,9 +52,6 @@ public:
 
   /* ── Broadcast message to all members (except 'exclude') ────────────── */
   void broadcast(const std::string &message, Client *exclude = 0);
-
-  /* ── Mode string for RPL_CHANNELMODEIS ──────────────────────────────── */
-  // std::string getModeString() const;
 
 private:
   std::string _name;
