@@ -1,83 +1,81 @@
-
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-#include <string>
-#include <vector>
-#include <map>
-#include <poll.h>
-#include "Client.hpp"
 #include "Channel.hpp"
+#include "Client.hpp"
 #include "Command.hpp"
 #include "Replies.hpp"
+#include <map>
+#include <poll.h>
+#include <string>
+#include <vector>
 
-class Server
-{
+class Server {
 public:
-	Server(int port, const std::string &password);
-	~Server();
+  Server(int port, const std::string &password);
+  ~Server();
 
-	void runServer();
+  void runServer();
 
-	/* Signal handling */
-	static bool isRunning();
-	static void signalHandler(int signum);
+  /* Signal handling */
+  static bool isRunning();
+  static void signalHandler(int signum);
 
 private:
-	/* ── Server setup ───────────────────────────────────────────────────── */
-	void _setupServer();
-	void _initCommandMap();
+  /* ── Server setup ───────────────────────────────────────────────────── */
+  void _setupServer();
+  void _initCommandMap();
 
-	/* ── Client lifecycle ───────────────────────────────────────────────── */
-	void _acceptNewClient();
-	void _removeClient(int fd);
-	void _handleClientData(int fd);
-	void _handleClientWrite(int fd);
-	Client *_findClientByNick(const std::string &nickname);
+  /* ── Client lifecycle ───────────────────────────────────────────────── */
+  void _acceptNewClient();
+  void _removeClient(int fd);
+  void _handleClientData(int fd);
+  void _handleClientWrite(int fd);
+  Client *_findClientByNick(const std::string &nickname);
 
-	/* ── Message processing ─────────────────────────────────────────────── */
-	void _processMessage(Client &client, const std::string &message);
-	void _dispatchCommand(Client &client, const Command &cmd);
-	void _sendReply(Client &client, const std::string &code) const;
+  /* ── Message processing ─────────────────────────────────────────────── */
+  void _processMessage(Client &client, const std::string &message);
+  void _dispatchCommand(Client &client, const Command &cmd);
+  void _sendReply(Client &client, const std::string &code) const;
 
-	/* ── Channel helpers ────────────────────────────────────────────────── */
-	void _removeClientFromAllChannels(int fd);
+  /* ── Channel helpers ────────────────────────────────────────────────── */
+  void _removeClientFromAllChannels(int fd);
 
-	/* ══ Command handlers — Person A ════════════════════════════════════ */
-	void _cmdPass(Client &client, const Command &cmd);
-	void _cmdNick(Client &client, const Command &cmd);
-	void _cmdUser(Client &client, const Command &cmd);
-	void _cmdQuit(Client &client, const Command &cmd);
-	void _cmdPing(Client &client, const Command &cmd);
-	void _cmdWhois(Client &client, const Command &cmd);
+  /* ══ Command handlers — Person A ════════════════════════════════════ */
+  void _cmdPass(Client &client, const Command &cmd);
+  void _cmdNick(Client &client, const Command &cmd);
+  void _cmdUser(Client &client, const Command &cmd);
+  void _cmdQuit(Client &client, const Command &cmd);
+  void _cmdPing(Client &client, const Command &cmd);
+  void _cmdWhois(Client &client, const Command &cmd);
 
-	/* ══ Command handlers — Person B (stubs until implemented) ══════════ */
-	void _cmdJoin(Client &client, const Command &cmd);
-	void _cmdPart(Client &client, const Command &cmd);
-	void _cmdPrivmsg(Client &client, const Command &cmd);
-	void _cmdKick(Client &client, const Command &cmd);
-	void _cmdInvite(Client &client, const Command &cmd);
-	void _cmdTopic(Client &client, const Command &cmd);
-	void _cmdMode(Client &client, const Command &cmd);
+  /* ══ Command handlers — Person B (stubs until implemented) ══════════ */
+  void _cmdJoin(Client &client, const Command &cmd);
+  void _cmdPart(Client &client, const Command &cmd);
+  void _cmdPrivmsg(Client &client, const Command &cmd);
+  void _cmdKick(Client &client, const Command &cmd);
+  void _cmdInvite(Client &client, const Command &cmd);
+  void _cmdTopic(Client &client, const Command &cmd);
+  void _cmdMode(Client &client, const Command &cmd);
 
-	/* ── Server state ───────────────────────────────────────────────────── */
-	int _port;
-	std::string _password;
-	int _listenFd;
-	static bool _running;
+  /* ── Server state ───────────────────────────────────────────────────── */
+  int _port;
+  std::string _password;
+  int _listenFd;
+  static bool _running;
 
-	std::vector<struct pollfd> _pollFds;
-	std::map<int, Client *> _clients;		  /* fd -> Client*  */
-	std::map<std::string, Channel> _channels; /* #name -> Channel */
+  std::vector<struct pollfd> _pollFds;
+  std::map<int, Client *> _clients;         /* fd -> Client*  */
+  std::map<std::string, Channel> _channels; /* #name -> Channel */
 
-	/* ── Command dispatch table ─────────────────────────────────────────── */
-	typedef void (Server::*CmdHandler)(Client &, const Command &);
-	std::map<std::string, CmdHandler> _cmdMap;
+  /* ── Command dispatch table ─────────────────────────────────────────── */
+  typedef void (Server::*CmdHandler)(Client &, const Command &);
+  std::map<std::string, CmdHandler> _cmdMap;
 
-	/* ── Orthodox Canonical Form — prevent copy ─────────────────────────── */
-	Server();
-	Server(const Server &other);
-	Server &operator=(const Server &other);
+  /* ── Orthodox Canonical Form — prevent copy ─────────────────────────── */
+  Server();
+  Server(const Server &other);
+  Server &operator=(const Server &other);
 };
 
 #endif

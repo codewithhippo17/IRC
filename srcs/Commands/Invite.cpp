@@ -1,42 +1,39 @@
 #include "../../includes/Server.hpp"
 
-void Server::_cmdInvite(Client &client, const Command &cmd)
-{
-    std::string targetNick = cmd.getParams()[0];
-    std::string channelName = cmd.getParams().size() > 1 ? cmd.getParams()[1] : "" ;
+void Server::_cmdInvite(Client &client, const Command &cmd) {
+  std::string targetNick = cmd.getParams()[0];
+  std::string channelName =
+      cmd.getParams().size() > 1 ? cmd.getParams()[1] : "";
 
-    std::map<std::string, Channel>::iterator it = _channels.find(channelName);
+  std::map<std::string, Channel>::iterator it = _channels.find(channelName);
 
-    if(it == _channels.end())
-    {
-        _sendReply(client, ERR_NOSUCHCHANNEL);
-        return;
-    }
-    Channel &channel = it->second;
-    
-    if (!channel.isOperator(&client))
-    {
-        _sendReply(client, ERR_CHANOPRIVSNEEDED);
-        return;
-    }
+  if (it == _channels.end()) {
+    _sendReply(client, ERR_NOSUCHCHANNEL);
+    return;
+  }
+  Channel &channel = it->second;
 
-    Client *target = _findClientByNick(targetNick);
-    if (!target)
-    {
-        _sendReply(client, ERR_NOSUCHNICK);
-        return;
-    }
-    if (channel.isMember(target))
-    {
-        _sendReply(client, ERR_USERONCHANNEL);
-        return;
-    }
+  if (!channel.isOperator(&client)) {
+    _sendReply(client, ERR_CHANOPRIVSNEEDED);
+    return;
+  }
 
-    channel.addInvited(target);
+  Client *target = _findClientByNick(targetNick);
+  if (!target) {
+    _sendReply(client, ERR_NOSUCHNICK);
+    return;
+  }
+  if (channel.isMember(target)) {
+    _sendReply(client, ERR_USERONCHANNEL);
+    return;
+  }
 
-    std::string inviteMsg = ":" + client.getNickname() + " INVITE " + targetNick + " " + channelName;
-    
-    target->sendMessage(inviteMsg);
+  channel.addInvited(target);
 
-    _sendReply(client, RPL_INVITING);
+  std::string inviteMsg =
+      ":" + client.getNickname() + " INVITE " + targetNick + " " + channelName;
+
+  target->sendMessage(inviteMsg);
+
+  _sendReply(client, RPL_INVITING);
 }
