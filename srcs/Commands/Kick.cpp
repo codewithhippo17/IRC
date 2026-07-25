@@ -35,6 +35,7 @@ void Server::_cmdKick(Client &client, const Command &cmd) {
   channel.broadcast(kickMsg, 0);
 
   channel.removeMember(target);
+  target->removeChannel(channelName);
 
   if (channel.getMembers().empty()) {
     _channels.erase(channelName);

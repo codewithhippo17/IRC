@@ -1,4 +1,3 @@
-
 #include "Server.hpp"
 
 void Server::_cmdPing(Client &client, const Command &cmd) {

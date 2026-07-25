@@ -20,6 +20,7 @@ void Server::_cmdPart(Client &client, const Command &cmd) {
   channel.broadcast(partMsg, 0);
 
   channel.removeMember(&client);
+  client.removeChannel(channelName);
 
   if (channel.getMembers().empty()) {
     _channels.erase(channelName);

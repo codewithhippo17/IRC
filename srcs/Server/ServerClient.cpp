@@ -1,4 +1,3 @@
-
 #include "Colors.hpp"
 #include "Server.hpp"
 

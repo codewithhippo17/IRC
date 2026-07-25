@@ -39,6 +39,7 @@ void Server::_cmdJoin(Client &client, const Command &cmd) {
   }
 
   channel.addMember(&client);
+  client.addChannel(channelName);
 
   std::string joinMsg = ":" + client.getNickname() + " JOIN " + channelName;
   channel.broadcast(joinMsg, 0);
