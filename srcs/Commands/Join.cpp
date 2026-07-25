@@ -1,6 +1,12 @@
 #include "Server.hpp"
 
 void Server::_cmdJoin(Client &client, const Command &cmd) {
+  if (cmd.getParams().empty()) {
+    client.sendMessage(":" SERVER_NAME " " ERR_NEEDMOREPARAMS " "
+                       + client.getNickname() + " JOIN :Not enough parameters\r\n");
+    return;
+  }
+
   std::string channelName = cmd.getParams()[0];
 
   std::map<std::string, Channel>::iterator it = _channels.find(channelName);
@@ -19,7 +25,9 @@ void Server::_cmdJoin(Client &client, const Command &cmd) {
     return;
 
   if (channel.isInviteOnly() && !channel.isInvited(&client)) {
-    _sendReply(client, ERR_INVITEONLYCHAN);
+    client.sendMessage(":" SERVER_NAME " " ERR_INVITEONLYCHAN " "
+                       + client.getNickname() + " " + channelName
+                       + " :Cannot join channel (+i)\r\n");
     return;
   }
 
@@ -27,14 +35,18 @@ void Server::_cmdJoin(Client &client, const Command &cmd) {
     std::string providekey =
         cmd.getParams().size() > 1 ? cmd.getParams()[1] : "";
     if (providekey != channel.getKey()) {
-      _sendReply(client, ERR_BADCHANNELKEY);
+      client.sendMessage(":" SERVER_NAME " " ERR_BADCHANNELKEY " "
+                         + client.getNickname() + " " + channelName
+                         + " :Cannot join channel (+k)\r\n");
       return;
     }
   }
 
   if (channel.hasLimit() &&
       channel.getMembers().size() >= static_cast<size_t>(channel.getLimit())) {
-    _sendReply(client, ERR_CHANNELISFULL);
+    client.sendMessage(":" SERVER_NAME " " ERR_CHANNELISFULL " "
+                       + client.getNickname() + " " + channelName
+                       + " :Cannot join channel (+l)\r\n");
     return;
   }
 

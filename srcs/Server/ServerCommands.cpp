@@ -118,8 +118,3 @@ void Server::_dispatchCommand(Client &client, const Command &cmd) {
   }
 }
 
-/* ── Send IRC numeric reply ──────────────────────────────────────────── */
-void Server::_sendReply(Client &client, const std::string &code) const {
-  client.sendMessage(":" SERVER_NAME " " + code + " " + client.getNickname() +
-                     "\r\n");
-}

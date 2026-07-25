@@ -1,31 +1,46 @@
 #include "Server.hpp"
 
 void Server::_cmdTopic(Client &client, const Command &cmd) {
+  if (cmd.getParams().empty()) {
+    client.sendMessage(":" SERVER_NAME " " ERR_NEEDMOREPARAMS " "
+                       + client.getNickname() + " TOPIC :Not enough parameters\r\n");
+    return;
+  }
+
   std::string channelName = cmd.getParams()[0];
 
   std::map<std::string, Channel>::iterator it = _channels.find(channelName);
-
   if (it == _channels.end()) {
-    _sendReply(client, ERR_NOSUCHCHANNEL);
+    client.sendMessage(":" SERVER_NAME " " ERR_NOSUCHCHANNEL " "
+                       + client.getNickname() + " " + channelName
+                       + " :No such channel\r\n");
     return;
   }
   Channel &channel = it->second;
 
   if (!channel.isMember(&client)) {
-    _sendReply(client, ERR_NOTONCHANNEL);
+    client.sendMessage(":" SERVER_NAME " " ERR_NOTONCHANNEL " "
+                       + client.getNickname() + " " + channelName
+                       + " :You're not on that channel\r\n");
     return;
   }
 
   if (!cmd.hasTrailing()) {
     if (channel.getTopic().empty())
-      _sendReply(client, RPL_NOTOPIC);
+      client.sendMessage(":" SERVER_NAME " " RPL_NOTOPIC " "
+                         + client.getNickname() + " " + channelName
+                         + " :No topic is set\r\n");
     else
-      _sendReply(client, RPL_TOPIC);
+      client.sendMessage(":" SERVER_NAME " " RPL_TOPIC " "
+                         + client.getNickname() + " " + channelName + " :"
+                         + channel.getTopic() + "\r\n");
     return;
   }
 
   if (channel.isTopicRestricted() && !channel.isOperator(&client)) {
-    _sendReply(client, ERR_CHANOPRIVSNEEDED);
+    client.sendMessage(":" SERVER_NAME " " ERR_CHANOPRIVSNEEDED " "
+                       + client.getNickname() + " " + channelName
+                       + " :You're not channel operator\r\n");
     return;
   }
 
