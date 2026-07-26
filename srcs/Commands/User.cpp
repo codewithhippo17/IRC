@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include <unistd.h>
 
 void Server::_cmdUser(Client &client, const Command &cmd) {
   if (client.isRegistered()) {
@@ -14,6 +15,7 @@ void Server::_cmdUser(Client &client, const Command &cmd) {
   }
 
   client.setUsername(cmd.getParam(0));
+  client.setHostname(cmd.getParam(1));
   client.setRealname(cmd.getTrailing());
 
   client.setUserAuth(true);
