@@ -12,9 +12,6 @@ Channel::Channel(const std::string &name)
 
 Channel::~Channel() {}
 
-/* ── Name ──────────────────────────────────────────────────────────────── */
-const std::string &Channel::getName() const { return _name; }
-
 /* ── Members ───────────────────────────────────────────────────────────── */
 void Channel::addMember(Client *client) { _members.insert(client); }
 
@@ -91,4 +88,3 @@ void Channel::broadcast(const std::string &message, Client *exclude) {
       (*it)->sendMessage(message + "\r\n");
   }
 }
-

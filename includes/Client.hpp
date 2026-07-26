@@ -44,7 +44,6 @@ public:
   const std::string &getRealname() const;
   void setNickname(const std::string &nick);
   void setUsername(const std::string &user);
-  void setHostname(const std::string &host);
   void setRealname(const std::string &real);
 
   /* ── IRC prefix :nick!user@host ─────────────────────────────────────── */

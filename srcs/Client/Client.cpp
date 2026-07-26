@@ -33,7 +33,6 @@ const std::string &Client::getRealname() const { return _realname; }
 
 void Client::setNickname(const std::string &nick) { _nickname = nick; }
 void Client::setUsername(const std::string &user) { _username = user; }
-void Client::setHostname(const std::string &host) { _hostname = host; }
 void Client::setRealname(const std::string &real) { _realname = real; }
 
 /* ── IRC prefix :nick!user@host ─────────────────────────────────────────── */

@@ -14,7 +14,6 @@ public:
   static Command parse(const std::string &raw);
 
   /* Getters */
-  const std::string &getPrefix() const;
   const std::string &getCommand() const;
   const std::vector<std::string> &getParams() const;
   const std::string &getTrailing() const;

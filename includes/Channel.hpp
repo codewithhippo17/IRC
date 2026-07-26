@@ -12,9 +12,6 @@ public:
   Channel(const std::string &name);
   ~Channel();
 
-  /* ── Name ───────────────────────────────────────────────────────────── */
-  const std::string &getName() const;
-
   /* ── Members ────────────────────────────────────────────────────────── */
   void addMember(Client *client);
   void removeMember(Client *client);

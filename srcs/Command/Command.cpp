@@ -57,8 +57,6 @@ Command Command::parse(const std::string &raw) {
   return cmd;
 }
 
-const std::string &Command::getPrefix() const { return _prefix; }
-
 const std::string &Command::getCommand() const { return _command; }
 
 const std::vector<std::string> &Command::getParams() const { return _params; }
